@@ -4,8 +4,6 @@ function loadData() {
   fetch('./test.json').then(promise => { return promise.json(); })
     .then(json => {
       data = json;
-      /*  console.log(data['name']);
-        console.log(json);*/
       f();
 
     })
@@ -56,15 +54,18 @@ function create_categories() {
   }
 }
 function display_items(categorie) {
+  
+  //видаляю попередні елементи
   let e =document.getElementsByClassName('list_of_items')[0];
-  console.log(e.length);
   if(e.hasChildNodes()) {
     while (e.firstChild) {
       e.removeChild(e.firstChild)
     }
   }
+
   if(categorie==undefined)
   console.log("така ");
+
   else{
       //вибираю items певної категорії
       let items_of_category = [];
@@ -81,11 +82,11 @@ function display_items(categorie) {
       });
 
       items_of_category.forEach(element => {
-        
         let div = document.getElementsByClassName('list_of_items')[0];
         let imgURL = element.gallery_images[0].url;        
         let item = document.createElement("div");
         item.classList.add("item");
+        item.addEventListener("click", function () { display_modal(element);});
         let img = document.createElement("img");
         img.classList.add("img_item");
         img.setAttribute('src', imgURL);
@@ -103,15 +104,27 @@ function display_items(categorie) {
         text_item.appendChild(title);
         text_item.appendChild(item_description);
       });
-
-      console.log(items_of_category);
-      /*for(let i = 0; i < element.items.length; i++){
-        item.gallery_images[0].url;
-       // console.log(item);
-        let item = document.createElement("div");
-        item.classList.add("item");
-        let img = document.createElement("img");
-        img.setAttribute('src', imgURL);
-        console.log(element);*/
     }
   } 
+  function display_modal (element) {
+
+    //очищаю модальне вікно
+  let e = document.getElementsByClassName('my')[0];
+  if(e.hasChildNodes()) {
+    while (e.firstChild) {
+      e.removeChild(e.firstChild)
+    }
+  }
+
+    let modal = document.getElementById("myModal");
+    modal.style.display = "block";
+    let span = document.getElementsByClassName("close")[0];
+    span.onclick = function() {
+    modal.style.display = "none";
+    }
+    let modal_content = document.getElementsByClassName("my")[0];
+    let item_title = document.createElement("p");
+    item_title.classList.add("item_title");
+    item_title.innerHTML = element.title;
+    modal_content.appendChild(item_title);
+  }
