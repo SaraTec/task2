@@ -51,6 +51,8 @@ function create_categories() {
   }
   else{
     display_items();
+    let tab = document.getElementsByClassName('tab')[0];
+    tab.style.display = "none";
   }
 }
 function display_items(categorie) {
@@ -66,7 +68,38 @@ function display_items(categorie) {
   if (categorie == undefined)
   {
     console.log("така ");
+    let items_of_category = [];
+    items_of_category = data['items'];
+        //сортую items певної категорії
+        items_of_category.sort(function (a, b) {
+          return a.position - b.position;
+        });
+    
+        items_of_category.forEach(element => {
+          let div = document.getElementsByClassName('list_of_items')[0];
+          let imgURL = element.gallery_images[0].url;
+          let item = document.createElement("div");
+          item.classList.add("item");
+          item.addEventListener("click", function () { display_modal(element); });
+          let img = document.createElement("img");
+          img.classList.add("img_item");
+          img.setAttribute('src', imgURL);
+          let text_item = document.createElement("div");
+          text_item.classList.add("text_item");
+          let title = document.createElement("p");
+          title.classList.add("title");
+          title.innerHTML = element.title;
+          let item_description = document.createElement("p");
+          item_description.classList.add("item_description");
+          item_description.innerHTML = element.description;
+          div.appendChild(item);
+          item.appendChild(img);
+          item.appendChild(text_item);
+          text_item.appendChild(title);
+          text_item.appendChild(item_description);
+        });
   }
+
   else {
     //вибираю items певної категорії
     let items_of_category = [];
@@ -174,9 +207,19 @@ function display_modal(element) {
 
   //вивожу відео з youtube у випадку якщо воно є
   if (element.videoUrl != null && element.videoTitle != null) {
+    let videoUrl = element.videoUrl;
+
+    //let reg = /^(https:\/\/www.youtube.com\/)[\w.\/#]+/g;
+    let b = "embed/";
+    let reg = /https:\/\/www.youtube.com\/watch\?v=/g;
+    var newString = videoUrl.replace(reg, b);
+    //var myArray = reg.exec(newStringl);
+    let Stringer = "https://www.youtube.com/"+newString;
+    console.log(Stringer);
+
     let video = document.createElement("iframe");
     video.classList.add("video");
-    video.setAttribute('src', element.videoUrl);
+    video.setAttribute('src', Stringer);
     modal_content.appendChild(video);
   }
 
