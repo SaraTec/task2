@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/styles_modal.css">
     <script src="js/scripts.js"></script>
+    <script src="js/slider.js"></script>
     <title>Document</title>
 </head>
 
@@ -21,8 +22,9 @@
     <div class="tab">
     </div>
     <div class="polotno">
-        <div class="about_item"></div>
+
         <div class="list_of_items">
+            
         </div>
     </div>
     <div id="myModal" class="modal">
@@ -32,6 +34,16 @@
             <span class="close">&times;</span>
             <div class="my">
                 <p class="item_title">Some text in the Modal..</p>
+                <div class="slider">
+                    <img class="mySlides" 
+                        src="img/items/bigstock--195212797-c427b.jpg">
+                    <img class="mySlides"
+                        src="img/items/album4597_34713_Sea-Life-Melbourne-Aquarium-things-to-do-in-whats-on-whats-009-cd480.jpg">
+                    <div class="cursor">
+                        <div class="w3-left " onclick="plusDivs(-1)">&#10094;</div>
+                        <div class="w3-right" onclick="plusDivs(1)">&#10095;</div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -21,7 +21,8 @@
     margin: auto;
     padding: 20px;
     border: 1px solid #888;
-    width: 80%;
+    width: 70%;
+    text-align: center;
   }
   
   /* The Close Button */
@@ -39,6 +40,56 @@
     text-decoration: none;
     cursor: pointer;
   }
-  .item_title{
 
+  .item_title{
+    text-align: center;
+  }
+
+  .mySlides {display:none}
+
+  .w3-left, .w3-right{cursor:pointer}
+
+  .w3-badge {height:13px;width:13px;padding:0} 
+
+  .slider{
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    max-width:800px;  
+  }
+
+  .mySlides{
+    width:auto; 
+    height:260px ;
+  }
+
+  .cursor{
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+   .item_long_description
+  {
+    text-align: center;
+    width: 100%;
+    margin: 0 auto;
+    white-space: pre-wrap;       /* css-3 */
+     white-space: -moz-pre-wrap;  /* Mozilla, с 1999 */
+     white-space: -pre-wrap;      /* Opera 4-6 */
+     white-space: -o-pre-wrap;    /* Opera 7 */
+     word-wrap: break-word;       /* Internet Explorer 5.5+ поддерживается в IE, Safari, и Firefox 3.1.*/
+     margin-top: 20px;
+     margin-bottom: 20px;
+    }
+
+  .my{
+  }
+
+  .video
+  {
+    margin-top: 10%;
+    margin-bottom: 20%;
+    width:90%;
+    height: 345px;
   }
