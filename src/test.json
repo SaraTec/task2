@@ -24,7 +24,7 @@
       "name": "Category 3",
       "positionNumber": 3,
       "items": [109, 103, 108],
-      "active": false
+      "active": true
     },
     {
       "id": 301,

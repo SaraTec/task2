@@ -28,11 +28,10 @@ function display_general() {
   head.appendChild(icon);
   let description = document.getElementsByClassName('description')[0];
   description.innerHTML = data['description'];
-  // display_items();
 }
 
 function create_categories() {
-  if (data['enable_multiple_lists'] == true) {
+  if (data['enable_multiple_lists'] === true) {
     let categories = data['categories'];
     //сортую категорії
     categories.sort(function (a, b) {
@@ -67,16 +66,11 @@ function display_items(categorie) {
 
   if (categorie == undefined)
   {
-    console.log("така ");
-    let items_of_category = [];
-    items_of_category = data['items'];
-        //сортую items певної категорії
-        items_of_category.sort(function (a, b) {
-          return a.position - b.position;
-        });
+    let items_of_category = data['items'];
     
+        let width_of_item = 90.0/items_of_category.length;
         items_of_category.forEach(element => {
-          let div = document.getElementsByClassName('list_of_items')[0];
+          let div_items = document.getElementsByClassName('list_of_items')[0];
           let imgURL = element.gallery_images[0].url;
           let item = document.createElement("div");
           item.classList.add("item");
@@ -92,7 +86,7 @@ function display_items(categorie) {
           let item_description = document.createElement("p");
           item_description.classList.add("item_description");
           item_description.innerHTML = element.description;
-          div.appendChild(item);
+          div_items .appendChild(item);
           item.appendChild(img);
           item.appendChild(text_item);
           text_item.appendChild(title);
@@ -101,8 +95,9 @@ function display_items(categorie) {
   }
 
   else {
-    //вибираю items певної категорії
-    let items_of_category = [];
+
+    //вибираю items певної категорії  
+    const items_of_category = [];
 
     data['items'].forEach(element => {
       if (categorie.items.includes(element.id)) {
@@ -110,16 +105,21 @@ function display_items(categorie) {
       }
     });
 
+    let width_of_item = 90.0/items_of_category.length;
+    console.log(width_of_item);
+
     //сортую items певної категорії
     items_of_category.sort(function (a, b) {
       return a.position - b.position;
     });
 
     items_of_category.forEach(element => {
-      let div = document.getElementsByClassName('list_of_items')[0];
+      let div_items  = document.getElementsByClassName('list_of_items')[0];
       let imgURL = element.gallery_images[0].url;
       let item = document.createElement("div");
       item.classList.add("item");
+      //задаю ширину для item
+      item.style.width = width_of_item+"%"
       item.addEventListener("click", function () { display_modal(element); });
       let img = document.createElement("img");
       img.classList.add("img_item");
@@ -132,7 +132,7 @@ function display_items(categorie) {
       let item_description = document.createElement("p");
       item_description.classList.add("item_description");
       item_description.innerHTML = element.description;
-      div.appendChild(item);
+      div_items.appendChild(item);
       item.appendChild(img);
       item.appendChild(text_item);
       text_item.appendChild(title);
@@ -154,6 +154,10 @@ function display_modal(element) {
   let modal = document.getElementById("myModal");
   modal.style.display = "block";
   let span = document.getElementsByClassName("close")[0];
+  window.onclick = function (event) {
+    if(event.target == modal)
+    modal.style.display = "none";
+  }
   span.onclick = function () {
     modal.style.display = "none";
   }
@@ -166,8 +170,24 @@ function display_modal(element) {
   modal_content.appendChild(item_title);
 
   //додаємо слайдер
+
+  //стрілочки
+  let cursor = document.createElement("div");
+  cursor.classList.add("cursor");
+  let w_left = document.createElement("button");
+  w_left.classList.add("w3-left");
+  w_left.innerHTML = "&#10094";
+  let w_right = document.createElement("button");
+  w_right.classList.add("w3-right");
+  w_right.innerHTML = "&#10095";
+  if (element.gallery_images.length > 1) {
+    w_left.setAttribute('onclick', "plusDivs(-1)");
+    w_right.setAttribute('onclick', "plusDivs(1)");
+  }
+
   let slider = document.createElement("div");
   slider.classList.add("slider");
+  slider.appendChild(w_left);
   element.gallery_images.forEach(one_image => {
     let img = document.createElement("img");
     img.classList.add("mySlides");
@@ -175,20 +195,12 @@ function display_modal(element) {
     img.setAttribute('src', imgURL);
     slider.appendChild(img);
   });
-  let cursor = document.createElement("div");
-  cursor.classList.add("cursor");
-  let w_left = document.createElement("div");
-  w_left.classList.add("w3-left");
-  w_left.innerHTML = "&#10094";
-  let w_right = document.createElement("div");
-  w_right.classList.add("w3-right");
-  w_right.innerHTML = "&#10095";
-  if (element.gallery_images.length > 1) {
-    cursor.appendChild(w_left);
-    cursor.appendChild(w_right);
-    slider.appendChild(cursor);
-    w_left.setAttribute('onclick', "plusDivs(-1)");
-    w_right.setAttribute('onclick', "plusDivs(1)");
+  slider.appendChild(w_right);
+  if(element.gallery_images.length<2)
+  {
+    w_right.style.display = "none";
+    w_left.style.display = "none";
+    slider.style.justifyContent="center";
   }
   modal_content.appendChild(slider);
   slideIndex = 1;
@@ -196,9 +208,9 @@ function display_modal(element) {
 
   //Виводжу long_description з клікабельними ссилками
   let arrey = element.long_description;
-  let reg = /https:\/\/[\w.\/#]+/g;
+  let reg = /https:\/\/[\w.\/#-]+/g;
   var myArray = reg.exec(arrey);
-  let a = "<a href=\"" + myArray + "\">" + myArray + "</a>"
+  let a = "<a  target=\"_blank\" href=\"" + myArray + "\">" + myArray + "</a>"
   var newString = arrey.replace(reg, a);
   let long_description = document.createElement("pre");
   long_description.classList.add("item_long_description");
@@ -208,20 +220,14 @@ function display_modal(element) {
   //вивожу відео з youtube у випадку якщо воно є
   if (element.videoUrl != null && element.videoTitle != null) {
     let videoUrl = element.videoUrl;
-
-    //let reg = /^(https:\/\/www.youtube.com\/)[\w.\/#]+/g;
     let b = "embed/";
     let reg = /https:\/\/www.youtube.com\/watch\?v=/g;
     var newString = videoUrl.replace(reg, b);
-    //var myArray = reg.exec(newStringl);
     let Stringer = "https://www.youtube.com/"+newString;
-    console.log(Stringer);
-
     let video = document.createElement("iframe");
     video.classList.add("video");
     video.setAttribute('src', Stringer);
     modal_content.appendChild(video);
   }
-
 }
 
